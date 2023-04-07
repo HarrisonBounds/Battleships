@@ -1,5 +1,5 @@
 package lab7out;
-"Test Commit"
+
 import ocsf.client.AbstractClient;
 
 public class ChatClient extends AbstractClient
