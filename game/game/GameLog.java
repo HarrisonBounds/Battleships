@@ -1,8 +1,8 @@
 package game;
 
-import javax.swing.JTextArea;
+import javax.swing.*;
 
-public class GameLog {
+public class GameLog extends JTextArea{
 	JTextArea log;
 	JScrollPane scroll;
 	

@@ -1,7 +1,6 @@
 package game;
 
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 public class Leaderboard{
 	private String[] columns;
@@ -9,11 +8,11 @@ public class Leaderboard{
 	private JTable log;
 	private JScrollPane scrollPane;
 
-	public Leaderboard(records, columns) {
+	public Leaderboard(Object[][] records, String[] columns) {
 		this.records = records;
 		this.columns = columns;
 
-		log = new JTable(records, columns)
-		scrollPane = new ScrollPane(log);
+		log = new JTable(records, columns);
+		scrollPane = new JScrollPane(log);
 	}
 }
