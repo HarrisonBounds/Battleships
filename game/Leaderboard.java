@@ -1,15 +1,19 @@
 package game;
 
-public class Leaderboard extends JTable{
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+
+public class Leaderboard{
 	private String[] columns;
 	private Object [][] records;
+	private JTable log;
 	private JScrollPane scrollPane;
-	
+
 	public Leaderboard(records, columns) {
 		this.records = records;
 		this.columns = columns;
-		
-		scrollPane = new ScrollPane(this);
+
+		log = new JTable(records, columns)
+		scrollPane = new ScrollPane(log);
 	}
-	
 }
