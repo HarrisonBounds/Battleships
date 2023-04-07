@@ -1,4 +1,4 @@
-package lab5out;
+package lab7out;
 
 import java.awt.*;
 import javax.swing.*;
@@ -12,13 +12,17 @@ public class ChatServer extends AbstractServer
   private JTextArea log;
   private JLabel status;
   private boolean running = false;
-  private DatabaseFile database = new DatabaseFile();
+  private Database db;
 
   // Constructor for initializing the server with default settings.
   public ChatServer()
   {
     super(12345);
     this.setTimeout(500);
+  }
+  
+  void setDatabase(Database db) {
+	  this.db = db;
   }
 
   // Getter that returns whether the server is currently running.
@@ -78,7 +82,7 @@ public class ChatServer extends AbstractServer
       // Check the username and password with the database.
       LoginData data = (LoginData)arg0;
       Object result;
-      if (database.verifyAccount(data.getUsername(), data.getPassword()))
+      if (db.verifyAccount(data.getUsername(), data.getPassword()))
       {
         result = "LoginSuccessful";
         log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
@@ -106,7 +110,7 @@ public class ChatServer extends AbstractServer
       // Try to create the account.
       CreateAccountData data = (CreateAccountData)arg0;
       Object result;
-      if (database.createNewAccount(data.getUsername(), data.getPassword()))
+      if (db.createNewAccount(data.getUsername(), data.getPassword()))
       {
         result = "CreateAccountSuccessful";
         log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");

@@ -1,4 +1,4 @@
-package lab5out;
+package lab7out;
 
 import ocsf.client.AbstractClient;
 

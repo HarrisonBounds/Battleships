@@ -1,4 +1,4 @@
-package lab5out;
+package lab7out;
 
 import java.awt.*;
 import javax.swing.*;
@@ -17,10 +17,12 @@ public class ServerGUI extends JFrame
   private JButton stop;
   private JButton quit;
   private ChatServer server;
+  private Database db;
 
   // Constructor for the server GUI.
 	public ServerGUI()
 	{	
+	
 	  // Create the main variables that will be used.
     JPanel north = new JPanel();
     JPanel center = new JPanel(new BorderLayout());
@@ -103,6 +105,14 @@ public class ServerGUI extends JFrame
     server = new ChatServer();
     server.setLog(log);
     server.setStatus(status);
+    
+    try {
+		db = new Database();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    server.setDatabase(db);
 	}
 	
 	// Main function that creates a server GUI when the program is started.
