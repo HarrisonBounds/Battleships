@@ -49,7 +49,7 @@ public class GamePanel extends JPanel{
 	
 
 	public GamePanel() {
-		control = new GameController();
+		//control = new GameController();
 		this.setController(control);
 
 		// BATTLESHIPS img at the top of the GUI
@@ -127,5 +127,16 @@ public class GamePanel extends JPanel{
 
 	public void setController(GameController control) {
 		this.control = control;
+	}
+	
+	public String getAlignment() {
+		String alignment = "";
+		
+		if (alignHorizontal.isSelected()) {
+			return alignment = "Horizontal";
+		}
+		else {
+			return alignment = "Vertial";
+		}
 	}
 }
