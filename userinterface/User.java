@@ -1,4 +1,4 @@
-package lab7out;
+package userinterface;
 
 import java.io.Serializable;
 

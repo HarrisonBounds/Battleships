@@ -1,8 +1,9 @@
-package lab7out;
+package userinterface;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import clientcommunication.*;
 
 public class InitialControl implements ActionListener
 {

@@ -1,6 +1,7 @@
-package lab7out;
+package server;
 
 import java.awt.*;
+import database.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;

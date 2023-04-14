@@ -1,6 +1,8 @@
-package lab7out;
+package clientcommunication;
 
 import ocsf.client.AbstractClient;
+import userinterface.*;
+import userinterface.Error;
 
 public class ChatClient extends AbstractClient
 {
