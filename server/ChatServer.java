@@ -1,6 +1,9 @@
-package lab7out;
+package server;
 
 import java.awt.*;
+import database.*;
+import userinterface.*;
+import userinterface.Error;
 import javax.swing.*;
 import java.io.IOException;
 import ocsf.server.AbstractServer;

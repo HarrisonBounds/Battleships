@@ -1,8 +1,9 @@
-package lab7out;
+package clientcommunication;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import userinterface.*;
 
 public class ClientGUI extends JFrame
 {

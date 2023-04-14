@@ -1,9 +1,10 @@
-package lab7out;
+package userinterface;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
+import clientcommunication.*;
 
 public class LoginControl implements ActionListener
 {
