@@ -7,9 +7,16 @@ public class TestDriver extends JFrame {
 	public TestDriver() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GamePanel gp = new GamePanel();
-		
+
 		this.add(gp);
-		setSize(400, 450);
+		this.setSize(950, 500);
 		setVisible(true);
+	}
+
+
+
+
+	public static void main(String[] args) {
+		TestDriver td = new TestDriver();
 	}
 }

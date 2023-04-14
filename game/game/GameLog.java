@@ -7,12 +7,12 @@ public class GameLog extends JTextArea{
 	JScrollPane scroll;
 	
 	GameLog() {
-		log = new JTextArea();
-		scroll = new JScrollPane(log);
-		log.setText("Welcome to Battleships... May your ships live long");
+		this.setText("[server]: Welcome to Battleships... May your ships live long");
+		this.setEditable(false);
+		//scroll = new JScrollPane(this);
 	}
 	
 	public void writeToLog(String message) {
-		log.append(message);
+		this.append("[server]:" + message);
 	}
 }
