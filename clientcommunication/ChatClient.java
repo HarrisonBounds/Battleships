@@ -1,5 +1,6 @@
 package clientcommunication;
 
+import game.GameController;
 import ocsf.client.AbstractClient;
 import userinterface.*;
 import userinterface.Error;
@@ -9,6 +10,7 @@ public class ChatClient extends AbstractClient
   // Private data fields for storing the GUI controllers.
   private LoginControl loginControl;
   private CreateAccountControl createAccountControl;
+  private GameController gameControl;
 
   // Setters for the GUI controllers.
   public void setLoginControl(LoginControl loginControl)
@@ -18,6 +20,10 @@ public class ChatClient extends AbstractClient
   public void setCreateAccountControl(CreateAccountControl createAccountControl)
   {
     this.createAccountControl = createAccountControl;
+  }
+  
+  public void setGameController(GameController gc) {
+	  this.gameControl = gc;
   }
 
   // Constructor for initializing the client with default settings.

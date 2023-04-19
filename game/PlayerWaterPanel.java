@@ -12,14 +12,18 @@ public class PlayerWaterPanel  extends JPanel
 {
 	//variables for the buttons
 	private JButton[] btns = new JButton[100];
-	private static Boolean addShipFlag = false;
-	private static Boolean fireFlag = false;
-	private static String alignment;
-	private static Ship[] ships = new Ship[5];
-	private static int shipCounter = 0;
+	private Boolean addShipFlag = true;
+	private Boolean fireFlag = false;
+	private String alignment;
+	private Ship[] ships = new Ship[5];
+	private int shipCounter = 0;
 
 	public PlayerWaterPanel()
 	{
+		
+		for (int i = 0; i < ships.length; i++) {
+			ships[i] = new Ship(i+1);
+		}
 
 		//Create the even handler
 		EventHandler eh = new EventHandler();
@@ -205,7 +209,7 @@ public class PlayerWaterPanel  extends JPanel
 		return bigEnough;
 	}
 
-	public static Boolean setShipFlagTrue(String align)
+	public Boolean setShipFlagTrue(String align)
 	{
 		Boolean doneAdding = false;
 		addShipFlag = true;
@@ -221,15 +225,35 @@ public class PlayerWaterPanel  extends JPanel
 			return doneAdding;
 		}
 	}
+	
+	public Boolean getShipFlag() {
+		return addShipFlag;
+	}
 
-	public static void setFireFlagTrue()
+	public void setFireFlagTrue()
 	{
 		fireFlag = true;
 	}
 
-	public static void setShips(Ship[] fleet)
+	public void setShips(Ship[] fleet)
 	{
 		ships = fleet;
+	}
+	
+	public Ship getShipAtIndex(int index) {
+		return ships[index];
+	}
+	
+	public int getShipCounter() {
+		return shipCounter;
+	}
+	
+	public void setShipCounter(int sc) {
+		shipCounter = sc;
+	}
+	
+	public Ship[] getShips() {
+		return ships;
 	}
 
 	// Implement this in the GameController

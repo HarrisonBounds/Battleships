@@ -1,6 +1,9 @@
 package clientcommunication;
 
 import javax.swing.*;
+
+import game.*;
+
 import java.awt.*;
 import java.io.IOException;
 import userinterface.*;
@@ -40,17 +43,19 @@ public class ClientGUI extends JFrame
     InitialControl ic = new InitialControl(container,client);
     LoginControl lc = new LoginControl(container,client);
     CreateAccountControl cac = new CreateAccountControl(container,client);
+    GameController gc = new GameController(container, client);
     
     //Set the client info
     client.setLoginControl(lc);
     client.setCreateAccountControl(cac);
+    client.setGameController(gc);
    
     
     // Create the four views. (need the controller to register with the Panels
     JPanel view1 = new InitialPanel(ic);
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
-    JPanel view4 = new ContactsPanel();
+    JPanel view4 = new GamePanel(gc);
     
     // Add the views to the card layout container.
     container.add(view1, "1");
@@ -60,7 +65,7 @@ public class ClientGUI extends JFrame
    
     
     // Show the initial view in the card layout.
-    cardLayout.show(container, "1");
+    cardLayout.show(container, "4");
     
     // Add the card layout container to the JFrame.
     // GridBagLayout makes the container stay centered in the window.
@@ -68,7 +73,7 @@ public class ClientGUI extends JFrame
     this.add(container);
 
     // Show the JFrame.
-    this.setSize(550, 350);
+    this.setSize(950, 500);
     this.setVisible(true);
   }
 

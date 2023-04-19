@@ -3,8 +3,14 @@ package game;
 import java.awt.*;
 import javax.swing.*;
 
+import clientcommunication.ChatClient;
+
 public class GamePanel extends JPanel{
-	private GameController control;
+	private ImageIcon icon;
+	private JPanel container;
+	private ChatClient client;
+	private GameController gameControl;
+	private GameData gameData;
 	private GameLog log;
 	private PlayerWaterPanel playerWater;
 	private PlayerWaterPanel opponentWater;
@@ -48,10 +54,9 @@ public class GamePanel extends JPanel{
 	private JButton ship5;
 	
 
-	public GamePanel() {
-		//control = new GameController();
-		this.setController(control);
-
+	public GamePanel(GameController gc) {
+		gameData = new GameData();
+		//System.out.println(playerWater.getShips());
 		// BATTLESHIPS img at the top of the GUI
 		battleshipsImg = new JButton(new ImageIcon(this.getClass().getResource("/Battleships.PNG")));
 		battleshipsImg.setBackground(Color.BLACK);
@@ -76,25 +81,33 @@ public class GamePanel extends JPanel{
 		
 		// Right hand side of the GUI
 		lineEndGrid = new JPanel(new GridLayout(6,1));
+		//lineEndGrid = new JPanel(new GridBagLayout());
 		lineEnd = new JPanel();
 		
-		ship1 = new JButton();
-		ship2 = new JButton();
-		ship3 = new JButton();
-		ship4 = new JButton();
-		ship5 = new JButton();
+		ship1 = new JButton(new ImageIcon(this.getClass().getResource("/Ship2.PNG")));
+		ship1.setPreferredSize(new Dimension(5,10));
+		ship2 = new JButton(new ImageIcon(this.getClass().getResource("/Ship2.PNG")));
+		ship2.setPreferredSize(new Dimension(5,10));
+		ship3 = new JButton(new ImageIcon(this.getClass().getResource("/Ship3.PNG")));
+		ship3.setPreferredSize(new Dimension(5,10));
+		ship4 = new JButton(new ImageIcon(this.getClass().getResource("/Ship4.PNG")));
+		ship4.setPreferredSize(new Dimension(5,10));
+		ship5 = new JButton(new ImageIcon(this.getClass().getResource("/Ship5.PNG")));
+		ship5.setPreferredSize(new Dimension(5,10));
 		lineEndGrid.add(ship1);
 		lineEndGrid.add(ship2);
 		lineEndGrid.add(ship3);
 		lineEndGrid.add(ship4);
 		lineEndGrid.add(ship5);
 		
+		// Bottom right hand side of the GUI
 		preShipsPlaced = new JPanel();
 		radioBtns = new JPanel(new GridLayout(2,1));
 		alignHorizontal = new JRadioButton("Horizontal");
 		alignHorizontal.setSelected(true);
 		alignVertical = new JRadioButton("Vertical");
 		placeShip = new JButton("Place Ship");
+		placeShip.addActionListener(gc);
 		
 		buttonGrp = new ButtonGroup();
 		buttonGrp.add(alignHorizontal);
@@ -116,7 +129,6 @@ public class GamePanel extends JPanel{
 		lineEndGrid.add(cardLayout);
 		lineEnd.add(lineEndGrid);
 		
-		
 		//adding each individual panel to the main JPanel
 		this.setLayout(new BorderLayout());
 		this.add(pageStart, BorderLayout.PAGE_START);
@@ -124,11 +136,10 @@ public class GamePanel extends JPanel{
 		this.add(center, BorderLayout.CENTER);
 		this.add(lineEnd, BorderLayout.LINE_END);
 	}
-
-	public void setController(GameController control) {
-		this.control = control;
-	}
-	
+	/*
+	 * The purpose of this function is to get the user's preferred alignment for their ships.
+	 * The value is retrieved from the pair of radio buttons (alignHorizontal/alignVertical)
+	 */
 	public String getAlignment() {
 		String alignment = "";
 		
@@ -136,7 +147,11 @@ public class GamePanel extends JPanel{
 			return alignment = "Horizontal";
 		}
 		else {
-			return alignment = "Vertial";
+			return alignment = "Vertical";
 		}
+	}
+	
+	public PlayerWaterPanel getPlayerWater() {
+		return this.playerWater;
 	}
 }
