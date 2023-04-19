@@ -12,7 +12,7 @@ public class PlayerWaterPanel  extends JPanel
 {
 	//variables for the buttons
 	private JButton[] btns = new JButton[100];
-	private Boolean addShipFlag = true;
+	private Boolean addShipFlag = false;
 	private Boolean fireFlag = false;
 	private String alignment;
 	private Ship[] ships = new Ship[5];
@@ -21,8 +21,13 @@ public class PlayerWaterPanel  extends JPanel
 	public PlayerWaterPanel()
 	{
 		
-		for (int i = 0; i < ships.length; i++) {
-			ships[i] = new Ship(i+1);
+		for (int i = 0; i < ships.length ; i++) {
+			if (i <= 1) {
+				ships[i] = new Ship(2);
+			}
+			else {
+				ships[i] = new Ship(i+1);
+			}
 		}
 
 		//Create the even handler
@@ -162,7 +167,7 @@ public class PlayerWaterPanel  extends JPanel
 		char letLimit = source.getToolTipText().charAt(0);
 		Boolean bigEnough = true;
 
-		if (alignment.contains("Horizontal"))
+		if (alignment.equals("Horizontal"))
 		{
 			//check to see if the ship fits horizontally
 			if((numLimit + size) > 11)
@@ -184,7 +189,7 @@ public class PlayerWaterPanel  extends JPanel
 			}
 			ship.setCoords(coords);
 		}
-		if (alignment.contains("Vertical"))
+		if (alignment.equals("Vertical"))
 		{
 			//check to see if the ship fits vertically
 			if((letLimit + size) > 'K')
@@ -215,7 +220,7 @@ public class PlayerWaterPanel  extends JPanel
 		addShipFlag = true;
 		alignment = align;
 
-		if (shipCounter == 4)
+		if (shipCounter == 5)
 		{
 			doneAdding = true;
 			return doneAdding;

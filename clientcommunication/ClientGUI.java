@@ -55,7 +55,7 @@ public class ClientGUI extends JFrame
     JPanel view1 = new InitialPanel(ic);
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
-    JPanel view4 = new GamePanel(gc);
+    JPanel view4 = new GamePanel(gc, container);
     
     // Add the views to the card layout container.
     container.add(view1, "1");

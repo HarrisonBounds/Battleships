@@ -35,7 +35,8 @@ public class GamePanel extends JPanel{
 	 * If the user is still placing ships (preShipsPlaced), it will display the rotateShip and placeShip buttons.
 	 * Once the user has placed all the ships (postShipsPlaced), it will show only the fire button
 	 */
-	private JPanel cardLayout;
+	private CardLayout cardLayout;
+	private JPanel cards;
 	private JPanel preShipsPlaced; 
 	private JPanel postShipsPlaced;
 	private JButton fireBtn;
@@ -54,7 +55,7 @@ public class GamePanel extends JPanel{
 	private JButton ship5;
 	
 
-	public GamePanel(GameController gc) {
+	public GamePanel(GameController gc, JPanel container) {
 		gameData = new GameData();
 		//System.out.println(playerWater.getShips());
 		// BATTLESHIPS img at the top of the GUI
@@ -74,8 +75,8 @@ public class GamePanel extends JPanel{
 		playerWater = new PlayerWaterPanel();
 		opponentWater = new PlayerWaterPanel();
 		centerGrid = new JPanel(new GridLayout(2,1));
-		centerGrid.add(playerWater);
 		centerGrid.add(opponentWater);
+		centerGrid.add(playerWater);
 		center = new JPanel();
 		center.add(centerGrid);
 		
@@ -120,13 +121,19 @@ public class GamePanel extends JPanel{
 		
 		postShipsPlaced = new JPanel();
 		fireBtn = new JButton("FIRE");
+		fireBtn.addActionListener(gc);
 		postShipsPlaced.add(fireBtn);
 		
-		cardLayout = new JPanel(new CardLayout());
-		cardLayout.add("preShipsPlaced", preShipsPlaced);
-		cardLayout.add("postShipsPlaced", postShipsPlaced);
+		cardLayout = new CardLayout();
+		cards = new JPanel(cardLayout);
+		cards.add(preShipsPlaced, "preShipsPlaced");
+		cards.add(postShipsPlaced, "postShipsPlaced");
+		//cardLayout.add("preShipsPlaced", preShipsPlaced);
+		//cardLayout.add("postShipsPlaced", postShipsPlaced);
 		
-		lineEndGrid.add(cardLayout);
+		cardLayout.show(cards, "preShipsPlaced");
+		
+		lineEndGrid.add(cards);
 		lineEnd.add(lineEndGrid);
 		
 		//adding each individual panel to the main JPanel
@@ -153,5 +160,9 @@ public class GamePanel extends JPanel{
 	
 	public PlayerWaterPanel getPlayerWater() {
 		return this.playerWater;
+	}
+	
+	public JPanel getCards() {
+		return this.cards;
 	}
 }
