@@ -1,12 +1,14 @@
 package server;
 
+// WORK IN PROGRESS, Currently focusing on handleMessageFromClient on GameServer class
+
 import java.awt.*;
 import database.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class ServerGUI extends JFrame
+public class GameServerGUI extends JFrame
 {
   // Data fields.
   private JLabel status;
@@ -17,11 +19,11 @@ public class ServerGUI extends JFrame
   private JButton close;
   private JButton stop;
   private JButton quit;
-  private ChatServer server;
+  private GameServer server;
   private Database db;
 
   // Constructor for the server GUI.
-	public ServerGUI()
+	public GameServerGUI()
 	{	
 	
 	  // Create the main variables that will be used.
@@ -103,9 +105,9 @@ public class ServerGUI extends JFrame
     this.setVisible(true);
     
     // Set up the chat server object.
-    server = new ChatServer();
+    server = new GameServer();
     //server.setLog(log);
-    server.setStatus(status);
+    //server.setStatus(status);
     
     try {
 		db = new Database();
@@ -119,7 +121,7 @@ public class ServerGUI extends JFrame
 	// Main function that creates a server GUI when the program is started.
 	public static void main(String[] args)
 	{
-		new ServerGUI();
+		new GameServerGUI();
 	}
 	
 	// Getters for the important components.
