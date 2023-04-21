@@ -47,7 +47,7 @@ public class Leaderboard extends JPanel{
         String[] columnNames = { "Username", "# of Wins" };
  
         // Initializing the JTable
-        j = new JTable(data, columnNames);
+        //j = new JTable(data, columnNames);
         j.setBounds(30, 40, 200, 300);
  
         // adding it to JScrollPane
