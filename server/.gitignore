@@ -1,3 +1,6 @@
 /ChatServer.class
 /ServerGUI$EventHandler.class
 /ServerGUI.class
+/GameServer.class
+/GameServerGUI.class
+/GameServerGUI$EventHandler.class
