@@ -57,7 +57,7 @@ public class Database
 				for(i = 0; i < noColumns; i++)
 				{
 					String value = rs.getString(i+1);
-					record += value + ",";
+					record += value + "";
 					array.add(record);
 				}
 			}
@@ -126,9 +126,30 @@ public class Database
 			return false;
 	}
 
-//	public ArrayList<String> getLeaderboard()
-//	{
-//
-//	}
+	public ArrayList<String> getLeaderboard()
+	{
+		ArrayList<String> leaderboard = query("SELECT username, wins FROM user");
+
+		return leaderboard;
+	}
+
+	public boolean updateLeaderboard(String username, Integer wins, Integer losses)
+	{
+		// execute the query.
+		ArrayList<String> validUsers = query("SELECT username FROM user");
+
+		// Stop if this account doesn't exist.
+		if (validUsers.contains(username))
+			return false;
+
+		// execute the dml statement
+		try {
+			executeDML("UPDATE user SET wins=wins+"+wins+",losses=losses+"+losses+" WHERE username='"+username+"'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
 
 }
