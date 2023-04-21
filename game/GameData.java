@@ -1,21 +1,16 @@
 package game;
 
+import java.util.ArrayList;
+
 public class GameData {
-	private Ship[] ships;
-	private PlayerWaterPanel water;
-
-	public GameData() {
-		// Creating the 5 ships
-		ships = new Ship[5];
-
-		for(int i = 0; i < ships.length; i ++) {
-			if(i == 0) {
-				ships[i] = new Ship(2);
-			}
-			else {
-				ships[i] = new Ship(i + 1);
-			}
-		}
-		water.setShips(ships);
+	private ArrayList<String> waterCoordinates;
+	
+	public GameData(ArrayList<String> waterCoordinates) {
+		this.waterCoordinates = waterCoordinates;
 	}
+	
+	public ArrayList<String> getWaterCoordinates() {
+		return this.waterCoordinates;
+	}
+	
 }
