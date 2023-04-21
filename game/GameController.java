@@ -35,22 +35,30 @@ public class GameController implements ActionListener {
 			 * it takes in the argument of the current alignment ("horizontal"/"vertical")
 			 */
 			if (pwp.setShipFlagTrue(gp.getAlignment())) {
-				//we then must increment the shipCounter
-				//pwp.setShipCounter(pwp.getShipCounter()+1);
+				//after placing a ship, the shipCounter gets automatically incremented
 			}
-			//when we have 5 ships on the board, alert the server that this client is ready
-			else if (pwp.getShipCounter() == 4) {
+			/*
+			 * when we shipCounter is equal to 4, we have 5 ships on the board
+			 * we can let the server know we're ready
+			 */
+			else if (pwp.getShipCounter() == 5) {
 
 //				try {
 //					client.sendToServer("Ready");
+					//data = new GameData(pwp.getShipCoordinates());
+					System.out.println(pwp.getShipCoordinates());
+					//then we change the button to FIRE
+					CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
+					cardLayout.show(gp.getCards(), "postShipsPlaced");
 //				} catch (IOException e1) {
 //					// TODO Auto-generated catch block
 //					e1.printStackTrace();
 //				}
-				//then we change the button to FIRE
-				CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
-				cardLayout.show(gp.getCards(), "postShipsPlaced");
+				
 			}
-		}		
+		}
+		if (command.equalsIgnoreCase("FIRE")) {
+			//send the server the location of the fire
+		}
 	}
 }

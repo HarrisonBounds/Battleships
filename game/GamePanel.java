@@ -56,8 +56,6 @@ public class GamePanel extends JPanel{
 	
 
 	public GamePanel(GameController gc, JPanel container) {
-		gameData = new GameData();
-		//System.out.println(playerWater.getShips());
 		// BATTLESHIPS img at the top of the GUI
 		battleshipsImg = new JButton(new ImageIcon(this.getClass().getResource("/Battleships.PNG")));
 		battleshipsImg.setBackground(Color.BLACK);

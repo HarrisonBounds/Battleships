@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
 
@@ -17,10 +18,14 @@ public class PlayerWaterPanel  extends JPanel
 	private String alignment;
 	private Ship[] ships = new Ship[5];
 	private int shipCounter = 0;
+	private ArrayList<String> waterCoordinates;
 
 	public PlayerWaterPanel()
 	{
-		
+		/*
+		 * creating each ship with their respective size
+		 * the first two ships will have a size of 2, the rest will have size 3,4,5
+		 */
 		for (int i = 0; i < ships.length ; i++) {
 			if (i <= 1) {
 				ships[i] = new Ship(2);
@@ -30,6 +35,7 @@ public class PlayerWaterPanel  extends JPanel
 			}
 		}
 
+		waterCoordinates = new ArrayList<String>();
 		//Create the even handler
 		EventHandler eh = new EventHandler();
 
@@ -188,6 +194,11 @@ public class PlayerWaterPanel  extends JPanel
 				}
 			}
 			ship.setCoords(coords);
+			/*
+			 * adding the coordinates to be able to pass them to the server via a GameData object
+			 */
+			String coord = Arrays.toString(ship.getCoords());
+			waterCoordinates.add(coord);
 		}
 		if (alignment.equals("Vertical"))
 		{
@@ -210,6 +221,11 @@ public class PlayerWaterPanel  extends JPanel
 				}
 			}
 			ship.setCoords(coords);
+			/*
+			 * adding the coordinates to be able to pass them to the server via a GameData object
+			 */
+			String coord = Arrays.toString(ship.getCoords());
+			waterCoordinates.add(coord);
 		}
 		return bigEnough;
 	}
@@ -220,7 +236,7 @@ public class PlayerWaterPanel  extends JPanel
 		addShipFlag = true;
 		alignment = align;
 
-		if (shipCounter == 5)
+		if (shipCounter == 6)
 		{
 			doneAdding = true;
 			return doneAdding;
@@ -231,9 +247,9 @@ public class PlayerWaterPanel  extends JPanel
 		}
 	}
 	
-	public Boolean getShipFlag() {
-		return addShipFlag;
-	}
+//	public Boolean getShipFlag() {
+//		return addShipFlag;
+//	}
 
 	public void setFireFlagTrue()
 	{
@@ -245,9 +261,13 @@ public class PlayerWaterPanel  extends JPanel
 		ships = fleet;
 	}
 	
-	public Ship getShipAtIndex(int index) {
-		return ships[index];
+	public ArrayList<String> getShipCoordinates() {
+		return this.waterCoordinates;
 	}
+	
+//	public Ship getShipAtIndex(int index) {
+//		return ships[index];
+//	}
 	
 	public int getShipCounter() {
 		return shipCounter;
@@ -257,9 +277,9 @@ public class PlayerWaterPanel  extends JPanel
 		shipCounter = sc;
 	}
 	
-	public Ship[] getShips() {
-		return ships;
-	}
+//	public Ship[] getShips() {
+//		return ships;
+//	}
 
 	// Implement this in the GameController
 	class EventHandler implements ActionListener

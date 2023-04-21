@@ -1,13 +1,16 @@
 package game;
 
-public class GameData {
-	private PlayerWaterPanel water;
-	private Ship[] ships;
-	public GameData() {
+import java.util.ArrayList;
 
+public class GameData {
+	private ArrayList<String> waterCoordinates;
+	
+	public GameData(ArrayList<String> waterCoordinates) {
+		this.waterCoordinates = waterCoordinates;
 	}
 	
-	public Ship[] getShips() {
-		return this.ships;
+	public ArrayList<String> getWaterCoordinates() {
+		return this.waterCoordinates;
 	}
+	
 }
