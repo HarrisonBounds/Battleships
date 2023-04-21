@@ -169,8 +169,9 @@ public class PlayerWaterPanel  extends JPanel
 	public Boolean addShip(JButton source, Ship ship, String alignment)
 	{
 		int size = ship.getSize();
-		String[] coords = new String[size];
 		int numLimit = Integer.parseInt(source.getToolTipText().replaceAll("\\D+", ""));
+		String[] coords = new String[size];
+		String[] checkCoords = new String[size];
 		char letLimit = source.getToolTipText().charAt(0);
 		Boolean bigEnough = true;
 
@@ -189,17 +190,10 @@ public class PlayerWaterPanel  extends JPanel
 				{
 					for(int j = 0; j < size; j++)
 					{
-						btns[i+j].setBackground(new Color(128, 128, 128));
 						coords[j] = btns[i+j].getToolTipText();
 					}
 				}
 			}
-			ship.setCoords(coords);
-			/*
-			 * adding the coordinates to be able to pass them to the server via a GameData object
-			 */
-			String coord = Arrays.toString(ship.getCoords());
-			waterCoordinates.add(coord);
 		}
 		if (alignment.equals("Vertical"))
 		{
@@ -216,18 +210,53 @@ public class PlayerWaterPanel  extends JPanel
 				{
 					for(int j = 0; j < size * 10; j += 10)
 					{
-						btns[i+j].setBackground(new Color(128, 128, 128));
 						coords[j/10] = btns[i+j].getToolTipText();
 					}
 				}
 			}
-			ship.setCoords(coords);
-			/*
-			 * adding the coordinates to be able to pass them to the server via a GameData object
-			 */
-			String coord = Arrays.toString(ship.getCoords());
-			waterCoordinates.add(coord);
 		}
+
+		//check to see if ship is on other ship
+		for(Ship s : ships)
+		{
+			checkCoords = s.getCoords();
+
+			for(int i = 0; i < coords.length; i ++)
+			{
+				if(checkCoords != null)
+				{
+					for(int j = 0; j < checkCoords.length; j ++)
+					{
+						if(coords[i] == checkCoords[j])
+						{
+							JOptionPane.showMessageDialog(null, "Ships cannot be placed on top of each other!", "OOPS", JOptionPane.INFORMATION_MESSAGE);
+							bigEnough = false;
+							return bigEnough;
+						}
+					}
+				}
+			}
+		}
+
+		//set the ship to the appropriate color
+		for(String s : coords)
+		{
+			for(int i = 0; i < btns.length; i ++)
+			{
+				if(btns[i].getToolTipText() == s)
+				{
+					btns[i].setBackground(new Color(128, 128, 128));
+				}
+			}
+		}
+
+		ship.setCoords(coords);
+		/*
+		 * adding the coordinates to be able to pass them to the server via a GameData object
+		 */
+		String coord = Arrays.toString(ship.getCoords());
+		waterCoordinates.add(coord);
+
 		return bigEnough;
 	}
 
@@ -247,10 +276,10 @@ public class PlayerWaterPanel  extends JPanel
 			return doneAdding;
 		}
 	}
-	
-//	public Boolean getShipFlag() {
-//		return addShipFlag;
-//	}
+
+	//	public Boolean getShipFlag() {
+	//		return addShipFlag;
+	//	}
 
 	public void setFireFlagTrue()
 	{
@@ -261,34 +290,34 @@ public class PlayerWaterPanel  extends JPanel
 	{
 		ships = fleet;
 	}
-	
+
 	public ArrayList<String> getShipCoordinates() {
 		return this.waterCoordinates;
 	}
-	
-//	public Ship getShipAtIndex(int index) {
-//		return ships[index];
-//	}
-	
+
+	//	public Ship getShipAtIndex(int index) {
+	//		return ships[index];
+	//	}
+
 	public int getShipCounter() {
 		return shipCounter;
 	}
-	
+
 	public void setShipCounter(int sc) {
 		shipCounter = sc;
 	}
-	
-	public JButton getFireLocation() {
-        return this.fireLocation;
-    }
 
-    public void setFireLocation(JButton fireLocation) {
-        this.fireLocation = fireLocation;
-    }
-	
-//	public Ship[] getShips() {
-//		return ships;
-//	}
+	public JButton getFireLocation() {
+		return this.fireLocation;
+	}
+
+	public void setFireLocation(JButton fireLocation) {
+		this.fireLocation = fireLocation;
+	}
+
+	//	public Ship[] getShips() {
+	//		return ships;
+	//	}
 
 	// Implement this in the GameController
 	class EventHandler implements ActionListener
