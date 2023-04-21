@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
 
@@ -12,15 +13,29 @@ public class PlayerWaterPanel  extends JPanel
 {
 	//variables for the buttons
 	private JButton[] btns = new JButton[100];
-	private static Boolean addShipFlag = false;
-	private static Boolean fireFlag = false;
-	private static String alignment;
-	private static Ship[] ships = new Ship[5];
-	private static int shipCounter = 0;
+	private Boolean addShipFlag = false;
+	private Boolean fireFlag = false;
+	private String alignment;
+	private Ship[] ships = new Ship[5];
+	private int shipCounter = 0;
+	private ArrayList<String> waterCoordinates;
 
 	public PlayerWaterPanel()
 	{
+		/*
+		 * creating each ship with their respective size
+		 * the first two ships will have a size of 2, the rest will have size 3,4,5
+		 */
+		for (int i = 0; i < ships.length ; i++) {
+			if (i <= 1) {
+				ships[i] = new Ship(2);
+			}
+			else {
+				ships[i] = new Ship(i+1);
+			}
+		}
 
+		waterCoordinates = new ArrayList<String>();
 		//Create the even handler
 		EventHandler eh = new EventHandler();
 
@@ -158,7 +173,7 @@ public class PlayerWaterPanel  extends JPanel
 		char letLimit = source.getToolTipText().charAt(0);
 		Boolean bigEnough = true;
 
-		if (alignment.contains("Horizontal"))
+		if (alignment.equals("Horizontal"))
 		{
 			//check to see if the ship fits horizontally
 			if((numLimit + size) > 11)
@@ -179,8 +194,13 @@ public class PlayerWaterPanel  extends JPanel
 				}
 			}
 			ship.setCoords(coords);
+			/*
+			 * adding the coordinates to be able to pass them to the server via a GameData object
+			 */
+			String coord = Arrays.toString(ship.getCoords());
+			waterCoordinates.add(coord);
 		}
-		if (alignment.contains("Vertical"))
+		if (alignment.equals("Vertical"))
 		{
 			//check to see if the ship fits vertically
 			if((letLimit + size) > 'K')
@@ -201,17 +221,22 @@ public class PlayerWaterPanel  extends JPanel
 				}
 			}
 			ship.setCoords(coords);
+			/*
+			 * adding the coordinates to be able to pass them to the server via a GameData object
+			 */
+			String coord = Arrays.toString(ship.getCoords());
+			waterCoordinates.add(coord);
 		}
 		return bigEnough;
 	}
 
-	public static Boolean setShipFlagTrue(String align)
+	public Boolean setShipFlagTrue(String align)
 	{
 		Boolean doneAdding = false;
 		addShipFlag = true;
 		alignment = align;
 
-		if (shipCounter == 4)
+		if (shipCounter == 6)
 		{
 			doneAdding = true;
 			return doneAdding;
@@ -221,16 +246,40 @@ public class PlayerWaterPanel  extends JPanel
 			return doneAdding;
 		}
 	}
+	
+//	public Boolean getShipFlag() {
+//		return addShipFlag;
+//	}
 
-	public static void setFireFlagTrue()
+	public void setFireFlagTrue()
 	{
 		fireFlag = true;
 	}
 
-	public static void setShips(Ship[] fleet)
+	public void setShips(Ship[] fleet)
 	{
 		ships = fleet;
 	}
+	
+	public ArrayList<String> getShipCoordinates() {
+		return this.waterCoordinates;
+	}
+	
+//	public Ship getShipAtIndex(int index) {
+//		return ships[index];
+//	}
+	
+	public int getShipCounter() {
+		return shipCounter;
+	}
+	
+	public void setShipCounter(int sc) {
+		shipCounter = sc;
+	}
+	
+//	public Ship[] getShips() {
+//		return ships;
+//	}
 
 	// Implement this in the GameController
 	class EventHandler implements ActionListener
