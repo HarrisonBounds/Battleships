@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import userinterface.*;
+import game.*; //to use leaderboard
 
 public class ClientGUI extends JFrame
 {
@@ -40,6 +41,9 @@ public class ClientGUI extends JFrame
     InitialControl ic = new InitialControl(container,client);
     LoginControl lc = new LoginControl(container,client);
     CreateAccountControl cac = new CreateAccountControl(container,client);
+    MainMenuControl mc = new MainMenuControl(container, client);
+    //is leaderboard supposed to be a gui?
+//    Leaderboard lb = new Leaderboard(container, client); is leaderboard finished? 
     
     //Set the client info
     client.setLoginControl(lc);
@@ -50,7 +54,7 @@ public class ClientGUI extends JFrame
     JPanel view1 = new InitialPanel(ic);
     JPanel view2 = new LoginPanel(lc);
     JPanel view3 = new CreateAccountPanel(cac);
-    JPanel view4 = new ContactsPanel();
+    JPanel view4 = new MainMenuPanel(mc);
     
     // Add the views to the card layout container.
     container.add(view1, "1");
