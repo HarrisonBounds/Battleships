@@ -27,6 +27,7 @@ public class GameController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		GamePanel gp = (GamePanel)container.getComponent(3);
+		PlayerWaterPanel opponent = gp.getOpponentWater();
 		PlayerWaterPanel pwp = gp.getPlayerWater();
 
 		if (command.equalsIgnoreCase("Place Ship")) {
@@ -59,6 +60,7 @@ public class GameController implements ActionListener {
 		}
 		if (command.equalsIgnoreCase("FIRE")) {
 			//send the server the location of the fire
+			opponent.setFireFlagTrue();
 		}
 	}
 }

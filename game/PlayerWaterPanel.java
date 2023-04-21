@@ -19,6 +19,7 @@ public class PlayerWaterPanel  extends JPanel
 	private Ship[] ships = new Ship[5];
 	private int shipCounter = 0;
 	private ArrayList<String> waterCoordinates;
+	private JButton fireLocation;
 
 	public PlayerWaterPanel()
 	{
@@ -277,6 +278,14 @@ public class PlayerWaterPanel  extends JPanel
 		shipCounter = sc;
 	}
 	
+	public JButton getFireLocation() {
+        return this.fireLocation;
+    }
+
+    public void setFireLocation(JButton fireLocation) {
+        this.fireLocation = fireLocation;
+    }
+	
 //	public Ship[] getShips() {
 //		return ships;
 //	}
@@ -295,6 +304,7 @@ public class PlayerWaterPanel  extends JPanel
 				if(checkHit(source))
 				{
 					isHit(source);
+					setFireLocation(source);
 				}
 				else
 				{

@@ -160,6 +160,10 @@ public class GamePanel extends JPanel{
 		return this.playerWater;
 	}
 	
+	public PlayerWaterPanel getOpponentWater() {
+        return this.opponentWater;
+    }
+	
 	public JPanel getCards() {
 		return this.cards;
 	}

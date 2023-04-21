@@ -104,7 +104,7 @@ public class ServerGUI extends JFrame
     
     // Set up the chat server object.
     server = new ChatServer();
-    //server.setLog(log);
+    server.setLog(log);
     server.setStatus(status);
     
     try {
