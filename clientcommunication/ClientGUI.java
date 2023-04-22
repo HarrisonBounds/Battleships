@@ -73,7 +73,7 @@ public class ClientGUI extends JFrame
    
     
     // Show the initial view in the card layout.
-    cardLayout.show(container, "4");
+    cardLayout.show(container, "1");
     
     // Add the card layout container to the JFrame.
     // GridBagLayout makes the container stay centered in the window.
