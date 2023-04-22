@@ -64,6 +64,7 @@ public class GameController implements ActionListener {
 			 */
 			opponent.setFireFlagTrue();
 			String fireLocation = opponent.getFireLocation();
+			System.out.println(fireLocation);
 			
 			try {
 				client.sendToServer(fireLocation);
