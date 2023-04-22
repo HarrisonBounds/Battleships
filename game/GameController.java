@@ -44,23 +44,33 @@ public class GameController implements ActionListener {
 			 */
 			else if (pwp.getShipCounter() == 5) {
 
-//				try {
-//					client.sendToServer("Ready");
-					//data = new GameData(pwp.getShipCoordinates());
-					System.out.println(pwp.getShipCoordinates());
+				try {
+					data = new GameData(pwp.getShipCoordinates());
+					client.sendToServer(data);
 					//then we change the button to FIRE
 					CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
 					cardLayout.show(gp.getCards(), "postShipsPlaced");
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		}
 		if (command.equalsIgnoreCase("FIRE")) {
-			//send the server the location of the fire
+			/*
+			 * setFireFlag triggers the firing of a ship
+			 * It assigns the location of the fire so we can then send that location to the server
+			 */
 			opponent.setFireFlagTrue();
+			String fireLocation = opponent.getFireLocation();
+			
+			try {
+				client.sendToServer(fireLocation);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }

@@ -126,8 +126,6 @@ public class GamePanel extends JPanel{
 		cards = new JPanel(cardLayout);
 		cards.add(preShipsPlaced, "preShipsPlaced");
 		cards.add(postShipsPlaced, "postShipsPlaced");
-		//cardLayout.add("preShipsPlaced", preShipsPlaced);
-		//cardLayout.add("postShipsPlaced", postShipsPlaced);
 		
 		cardLayout.show(cards, "preShipsPlaced");
 		

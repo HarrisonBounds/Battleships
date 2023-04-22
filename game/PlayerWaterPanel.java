@@ -19,7 +19,7 @@ public class PlayerWaterPanel  extends JPanel
 	private Ship[] ships = new Ship[5];
 	private int shipCounter = 0;
 	private ArrayList<String> waterCoordinates;
-	private JButton fireLocation;
+	private String fireLocation;
 
 	public PlayerWaterPanel()
 	{
@@ -134,27 +134,27 @@ public class PlayerWaterPanel  extends JPanel
 
 	}
 
-	public Boolean checkHit(JButton butt)
-	{
-		Boolean hit = false;
-		for(int i = 0; i < 5; i++)
-		{
-			for(String s : ships[i].getCoords())
-			{
-				if(s.contains(butt.getToolTipText()))
-				{
-					ships[i].markHit();
-					if(ships[i].isSunk())
-					{
-						JOptionPane.showMessageDialog(null, "A BATTLESHIP WAS SUNK!", "SINK", JOptionPane.INFORMATION_MESSAGE);
-					}
-					hit = true;
-					return hit;
-				}
-			}
-		}
-		return hit;	
-	}
+//	public Boolean checkHit(JButton butt)
+//	{
+//		Boolean hit = false;
+//		for(int i = 0; i < 5; i++)
+//		{
+//			for(String s : ships[i].getCoords())
+//			{
+//				if(s.contains(butt.getToolTipText()))
+//				{
+//					ships[i].markHit();
+//					if(ships[i].isSunk())
+//					{
+//						JOptionPane.showMessageDialog(null, "A BATTLESHIP WAS SUNK!", "SINK", JOptionPane.INFORMATION_MESSAGE);
+//					}
+//					hit = true;
+//					return hit;
+//				}
+//			}
+//		}
+//		return hit;	
+//	}
 
 	public void isHit(JButton butt)
 	{
@@ -277,10 +277,6 @@ public class PlayerWaterPanel  extends JPanel
 		}
 	}
 
-	//	public Boolean getShipFlag() {
-	//		return addShipFlag;
-	//	}
-
 	public void setFireFlagTrue()
 	{
 		fireFlag = true;
@@ -295,10 +291,6 @@ public class PlayerWaterPanel  extends JPanel
 		return this.waterCoordinates;
 	}
 
-	//	public Ship getShipAtIndex(int index) {
-	//		return ships[index];
-	//	}
-
 	public int getShipCounter() {
 		return shipCounter;
 	}
@@ -307,17 +299,13 @@ public class PlayerWaterPanel  extends JPanel
 		shipCounter = sc;
 	}
 
-	public JButton getFireLocation() {
+	public String getFireLocation() {
 		return this.fireLocation;
 	}
 
-	public void setFireLocation(JButton fireLocation) {
+	public void setFireLocation(String fireLocation) {
 		this.fireLocation = fireLocation;
 	}
-
-	//	public Ship[] getShips() {
-	//		return ships;
-	//	}
 
 	// Implement this in the GameController
 	class EventHandler implements ActionListener
@@ -330,15 +318,16 @@ public class PlayerWaterPanel  extends JPanel
 			//fire
 			if (fireFlag)
 			{
-				if(checkHit(source))
-				{
-					isHit(source);
-					setFireLocation(source);
-				}
-				else
-				{
-					isMiss(source);
-				}
+				setFireLocation(source.getToolTipText());
+//				if(checkHit(source))
+//				{
+//					isHit(source);
+//					
+//				}
+//				else
+//				{
+//					isMiss(source);
+//				}
 
 				fireFlag = false;
 			}
