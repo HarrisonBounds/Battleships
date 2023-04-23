@@ -94,14 +94,7 @@ public class GameServer extends AbstractServer{
 	// When a client connects or disconnects, display a message in the log.
 	public void clientConnected(ConnectionToClient client)
 	{
-		if (player1.equals(null))
-		{
-			player1 = client;
-		}
-		else
-		{
-			player2 = client;
-		}
+		
 		
 		log.append("Client " + client.getId() + " connected\n");
 		
@@ -126,7 +119,18 @@ public class GameServer extends AbstractServer{
 			{
 				result = "LoginSuccessful";
 				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
-				clientList.put(arg1, data.getUsername());
+				
+				if (player1.equals(null))
+				{
+					player1 = arg1;
+					log.append("Player 1: " + data.getUsername());
+				}
+				else
+				{
+					player2 = arg1;
+					log.append("Player 2: " + data.getUsername());
+				}
+				
 			}
 			else
 			{
