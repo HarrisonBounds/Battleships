@@ -18,7 +18,7 @@ public class PlayerWaterPanel  extends JPanel
 	private String alignment;
 	private Ship[] ships = new Ship[5];
 	private int shipCounter = 0;
-	private ArrayList<String> waterCoordinates;
+	private ArrayList<String[]> waterCoordinates;
 	private String fireLocation;
 
 	public PlayerWaterPanel()
@@ -36,7 +36,7 @@ public class PlayerWaterPanel  extends JPanel
 			}
 		}
 
-		waterCoordinates = new ArrayList<String>();
+		waterCoordinates = new ArrayList<String[]>();
 		//Create the even handler
 		EventHandler eh = new EventHandler();
 
@@ -254,8 +254,8 @@ public class PlayerWaterPanel  extends JPanel
 		/*
 		 * adding the coordinates to be able to pass them to the server via a GameData object
 		 */
-		String coord = Arrays.toString(ship.getCoords());
-		waterCoordinates.add(coord);
+		//String coord = Arrays.toString(ship.getCoords());
+		waterCoordinates.add(coords);
 
 		return bigEnough;
 	}
@@ -287,7 +287,7 @@ public class PlayerWaterPanel  extends JPanel
 		ships = fleet;
 	}
 
-	public ArrayList<String> getShipCoordinates() {
+	public ArrayList<String[]> getShipCoordinates() {
 		return this.waterCoordinates;
 	}
 

@@ -34,7 +34,7 @@ public class GameServerGUI extends JFrame
     int i = 0;
     
     // Set the title and default close operation.
-    this.setTitle("Chat Server");
+    this.setTitle("Game Server");
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // Create the status label.
@@ -106,8 +106,8 @@ public class GameServerGUI extends JFrame
     
     // Set up the chat server object.
     server = new GameServer();
-    //server.setLog(log);
-    //server.setStatus(status);
+    server.setLog(log);
+    server.setStatus(status);
     
     try {
 		db = new Database();
