@@ -311,13 +311,15 @@ public class GameServer extends AbstractServer{
 				{
 					coords[i] = "HIT";
 					result = "Hit";
+					
+					if (isSink(coords))
+					{
+						result = "Sink";
+					}
 				}
 			}
 			
-			if (isSink(coords))
-			{
-				result = "Sink";
-			}
+			
 		}
 		
 		return result;
