@@ -1,21 +1,28 @@
 package database;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
 public class Database
 {
 	private Connection conn;
-	//Add any other data fields you like – at least a Connection object is mandatory
-	public Database() throws IOException
-	{
-		//Add your code here
 
+	public void setConnection()
+	{
 		//Read the connection properties as Strings
 		Properties prop = new Properties();
-		FileInputStream fis = new FileInputStream("database/db.properties");
-		prop.load(fis);
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("database/db.properties");
+			prop.load(fis);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String url = prop.getProperty("url");
 		String user = prop.getProperty("user");
 		String pass = prop.getProperty("password"); 
@@ -24,10 +31,15 @@ public class Database
 		{
 			//Perform the Connection
 			conn = DriverManager.getConnection(url,user,pass);
+			System.out.println("database connected");
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	public Connection getConnection()
+	{
+		return conn;
 	}
 
 	public ArrayList<String> query(String query)
@@ -126,14 +138,62 @@ public class Database
 			return false;
 	}
 
-	public ArrayList<String> getLeaderboard()
+	public ArrayList<User> getLeaderboard()
 	{
-		ArrayList<String> leaderboard = query("SELECT username, wins FROM user");
+		int i = 0;
+		int rowCount = 0; //Detect empty result set
+		ArrayList<String> array = new ArrayList<String>();
+		ArrayList<User> leaderboard = new ArrayList<User>();
 
-		return leaderboard;
+
+		try 
+		{
+			//Create a statement from the Connection
+			Statement stmt = conn.createStatement();
+
+			//Run the query
+			ResultSet rs = stmt.executeQuery("SELECT username, aes_decrypt(password,'key'), wins, losses FROM user ORDER BY wins DESC");
+
+			//Get the metadata
+			ResultSetMetaData rmd = rs.getMetaData();
+
+			int noColumns = rmd.getColumnCount();
+
+			while(rs.next())
+			{
+				rowCount++;
+				String record = "";
+				for(i = 0; i < noColumns; i++)
+				{
+					String value = rs.getString(i+1);
+					record += value + "";
+					array.add(record);
+
+				}
+				User u = new User(rs.getString(0),rs.getString(1),rs.getString(2),rs.getString(3));
+				leaderboard.add(u);
+			}
+
+			if(rowCount > 0)
+			{
+				return leaderboard;
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
 	}
 
-	public boolean updateLeaderboard(String username, Integer wins, Integer losses)
+	public boolean updateLeaderboard(String username, String wins, String losses)
 	{
 		// execute the query.
 		ArrayList<String> validUsers = query("SELECT username FROM user");
