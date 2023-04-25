@@ -3,12 +3,12 @@ package game;
 import java.awt.*;
 import javax.swing.*;
 
-import clientcommunication.ChatClient;
+import clientcommunication.GameClient;
 
 public class GamePanel extends JPanel{
 	private ImageIcon icon;
 	private JPanel container;
-	private ChatClient client;
+	private GameClient client;
 	private GameController gameControl;
 	private GameData gameData;
 	private GameLog log;
@@ -44,6 +44,7 @@ public class GamePanel extends JPanel{
 	private JRadioButton alignHorizontal;
 	private JRadioButton alignVertical;
 	private JButton placeShip;
+	private JButton readyBtn;
 	
 	/*
 	 * The following buttons are simply to hold images of battleships for an aesthetic.
@@ -107,6 +108,8 @@ public class GamePanel extends JPanel{
 		alignVertical = new JRadioButton("Vertical");
 		placeShip = new JButton("Place Ship");
 		placeShip.addActionListener(gc);
+		readyBtn = new JButton("Ready");
+		readyBtn.addActionListener(gc);
 		
 		buttonGrp = new ButtonGroup();
 		buttonGrp.add(alignHorizontal);
@@ -116,6 +119,7 @@ public class GamePanel extends JPanel{
 		radioBtns.add(alignVertical);
 		preShipsPlaced.add(radioBtns);
 		preShipsPlaced.add(placeShip);
+		preShipsPlaced.add(readyBtn);
 		
 		postShipsPlaced = new JPanel();
 		fireBtn = new JButton("FIRE");
@@ -126,8 +130,6 @@ public class GamePanel extends JPanel{
 		cards = new JPanel(cardLayout);
 		cards.add(preShipsPlaced, "preShipsPlaced");
 		cards.add(postShipsPlaced, "postShipsPlaced");
-		//cardLayout.add("preShipsPlaced", preShipsPlaced);
-		//cardLayout.add("postShipsPlaced", postShipsPlaced);
 		
 		cardLayout.show(cards, "preShipsPlaced");
 		
@@ -166,5 +168,15 @@ public class GamePanel extends JPanel{
 	
 	public JPanel getCards() {
 		return this.cards;
+	}
+	
+	public void setLog(JTextArea log)
+	{
+		this.log.setLog(log);
+	}
+	
+	public void announceWinner(String username)
+	{
+		JOptionPane.showMessageDialog(null, username + " wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

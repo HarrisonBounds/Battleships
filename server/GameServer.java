@@ -15,13 +15,20 @@ public class GameServer extends AbstractServer{
 
 
 
-	private GameLog log;
+	private JTextArea log;
+	private JLabel status;
 	private boolean running = false;
 	private Database db;
-	private ConnectionToClient player1;
-	private ConnectionToClient player2;
+	private ConnectionToClient player;
+	private ConnectionToClient opp;
+	private ArrayList<String[]> p1Coords;
+	private ArrayList<String[]> p2Coords;
+	private ArrayList<ConnectionToClient> clientList;
+	private int p1Ships;
+	private int p2Ships;
+	private int playerNum;
 
-	private HashMap<ConnectionToClient, String> clientList;
+	private HashMap<String, ConnectionToClient> playerList;
 
 
 	// Constructor for initializing the server with default settings.
@@ -30,7 +37,10 @@ public class GameServer extends AbstractServer{
 		super(12345);
 		this.setTimeout(500);
 
-		clientList = new HashMap<ConnectionToClient, String>();;
+		p1Ships = 5;
+		p2Ships = 5;
+		playerNum = 1;
+
 	}
 
 	//Setter for database
@@ -46,25 +56,30 @@ public class GameServer extends AbstractServer{
 	}
 
 	// Setters for the data fields corresponding to the GUI elements.
-	public void setLog(GameLog log)
+	public void setLog(JTextArea log)
 	{
 		this.log = log;
+	}
+
+	public void setStatus(JLabel status)
+	{
+		this.status = status;
 	}
 
 	// When the server starts, update the GUI.
 	public void serverStarted()
 	{
 		running = true;
-		//status.setText("Listening");
-		//status.setForeground(Color.GREEN);
+		status.setText("Listening");
+		status.setForeground(Color.GREEN);
 		log.append("Server started...\n");
 	}
 
 	// When the server stops listening, update the GUI.
 	public void serverStopped()
 	{
-		//status.setText("Stopped");
-		//status.setForeground(Color.RED);
+		status.setText("Stopped");
+		status.setForeground(Color.RED);
 		log.append("Server stopped accepting new clients - press Listen to start accepting new clients\n");
 	}
 
@@ -72,15 +87,38 @@ public class GameServer extends AbstractServer{
 	public void serverClosed()
 	{
 		running = false;
-		//status.setText("Close");
-		//status.setForeground(Color.RED);
+		status.setText("Close");
+		status.setForeground(Color.RED);
 		log.append("Server and all current clients are closed - press Listen to restart\n");
 	}
 
 	// When a client connects or disconnects, display a message in the log.
 	public void clientConnected(ConnectionToClient client)
 	{
+
+
 		log.append("Client " + client.getId() + " connected\n");
+
+		//		try {
+		//			client.sendToClient(log);
+		//		} catch (IOException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
+	}
+
+	public void clientDisconnected(ConnectionToClient client)
+	{
+
+
+		log.append("Client " + client.getId() + " disconnected\n");
+
+		//		try {
+		//			client.sendToClient(log);
+		//		} catch (IOException e) {
+		//			// TODO Auto-generated catch block
+		//			e.printStackTrace();
+		//		}
 	}
 
 	// When a message is received from a client, handle it.
@@ -92,11 +130,35 @@ public class GameServer extends AbstractServer{
 			// Check the username and password with the database.
 			LoginData data = (LoginData)arg0;
 			Object result;
+			Long test;
 			if (db.verifyAccount(data.getUsername(), data.getPassword()))
 			{
 				result = "LoginSuccessful";
 				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
-				clientList.put(arg1, data.getUsername());
+				//clientList.put(arg1, data.getUsername());
+				arg1.setInfo("username", data.getUsername());
+				arg1.setInfo("player", playerNum);
+				playerNum++;
+				//clientList.add(arg1);
+
+//				if (clientList.size() == 2)
+//				{
+//					setupGame(clientList);
+//				}
+
+				//				test = player1.getId();
+				//				
+				//				if (test.equals(null))
+				//				{
+				//					player1 = arg1;
+				//					log.append("Player 1: " + data.getUsername());
+				//				}
+				//				else
+				//				{
+				//					player2 = arg1;
+				//					log.append("Player 2: " + data.getUsername());
+				//				}
+
 			}
 			else
 			{
@@ -113,12 +175,8 @@ public class GameServer extends AbstractServer{
 			{
 				return;
 			}
-		}
+		}		
 
-		
-		// IGNORE, WORK IN PROGRESS
-		
-		
 		// If we received CreateAccountData, create a new account.
 		else if (arg0 instanceof CreateAccountData)
 		{
@@ -146,47 +204,39 @@ public class GameServer extends AbstractServer{
 				return;
 			}
 		}
-		
-		// If client sends string messages
-		
-		else if (arg0 instanceof String)
-		{
-			// Get the text of the message.
-			String message = (String)arg0;
 
-			// If client says ready
-			
-			if (message.equals("Ready"))
-			{
-				// setup the game go to line 234 for method
-				setupGame(arg1);
-			}
-			
-		} 
-		
-		// whenever fire is selected, client sends a GameData object which is passed from player1 to player2 and vice versa
 		else if (arg0 instanceof GameData)
 		{
-			// if GameData oject is from player1
-			if (arg1.equals(player1))
+			GameData data = (GameData)arg0;
+			int pNum = (int)arg1.getInfo("player");
+			String result;
+
+			if (pNum == 1)
 			{
+				p1Coords = data.getWaterCoordinates();
+
+				result = "StartGame";
+				log.append("player: " + arg1.getInfo("username") + " is ready\n");
+
 				try
 				{
-					// send the data to player2
-					player2.sendToClient(arg0);
+					arg1.sendToClient(result);
 				}
 				catch (IOException e)
 				{
 					return;
 				}
 			}
-			// if GameData object is from player2
-			else if (arg1.equals(player2))
+			else
 			{
+				p2Coords = data.getWaterCoordinates();
+
+				result = "StartGame";
+				log.append("player: " + arg1.getInfo("username") + " is ready\n");
+
 				try
 				{
-					// send data to player1
-					player1.sendToClient(arg0);
+					arg1.sendToClient(result);
 				}
 				catch (IOException e)
 				{
@@ -194,108 +244,146 @@ public class GameServer extends AbstractServer{
 				}
 			}
 		}
-		
-		/*
-		 * This is the logic I had in mind when going for this
-		 * 
-		 * This batch of code would be needed on handleMessageFromServer on client side
-		 * 
-		 * if (arg0 instanceof GameData)
-		 * {
-		 * 		GameData data = (GameData)arg0;
-		 * 		String moveType = arg0.getMoveType();
-		 * 		String[] coords = arg0.getCoords();
-		 * 
-		 * 		if (moveType == "Fire")
-		 * 		{
-		 *			 //updates player water panel with hit, miss, or sink with given coords, 
-		 *				sends GameData of moveType "Hit", "Miss", or "Sink" back to server
-		 *
-		 * 			GameController.Fire(coords); 
-		 * 		}
-		 *		else if (moveType == "Hit")
-		 * 		{
-		 * 			//marks hit on opponent water panel
-		 * 
-		 * 			GameController.Hit(coords);
-		 * 		}
-		 * 		else if (moveType == "Miss")
-		 * 		{
-		 * 			//marks miss on opponent water panel
-		 * 
-		 * 			GameController.Miss(coords);
-		 * 		}
-		 * 		else if (moveType == "Sink")
-		 * 		{
-		 * 			//marks sink on opponent water panel
-		 * 			
-		 * 			GameController.Sink(coords);
-		 * 		}
-		 * 
-		 * 
-		 * 
-		 */
+
+		else if (arg0 instanceof PlayerWaterPanelData)
+		{
+			PlayerWaterPanelData data = (PlayerWaterPanelData)arg0;
+			String fireLocation = data.getFireLocation();
+			String hitCheck = "";
+			String username = (String)arg1.getInfo("username");
+			String win;
+			int pNum = (int)arg1.getInfo("player");
+
+			if (pNum == 1)
+			{
+				hitCheck = checkForHit(fireLocation, p2Coords);
+
+				if (hitCheck.equals("Sink"))
+				{
+					p2Ships--;
+
+					if (p2Ships == 0)
+					{
+						hitCheck = "Winner";
+					}
+				}
+				
+				String[] result = new String[] {fireLocation, hitCheck, username};
+				
+				log.append(arg1.getInfo("username") + " fire at " + fireLocation + " is a " + hitCheck + "!\n");
+
+				try
+				{
+					arg1.sendToClient(result);
+					
+					if (hitCheck.equals("Winner"))
+					{
+						this.sendToAllClients(result);
+					}
+				}
+				catch (IOException e)
+				{
+					return;
+				}
+				
+				
+				
+				
+			}
+			else
+			{
+				hitCheck = checkForHit(fireLocation, p1Coords);
+
+				if (hitCheck.equals("Sink"))
+				{
+					p1Ships--;
+
+					if (p1Ships == 0)
+					{
+						hitCheck = "Winner";
+					}
+				}
+				
+				String[] result = new String[] {fireLocation, hitCheck, username};
+				
+				log.append(arg1.getInfo("username") + "fire at " + fireLocation + " is a " + hitCheck + "!\n");
+
+				try
+				{
+					arg1.sendToClient(result);
+					
+					if (hitCheck.equals("Winner"))
+					{
+						this.sendToAllClients(result);
+					}
+				}
+				catch (IOException e)
+				{
+					return;
+				}
+			}
+
+		}
 	}
 
-	public void setupGame(ConnectionToClient client)
+
+	public void setupGame(ArrayList<ConnectionToClient> clientList) 
 	{
-		// result to send back to client
-		
-		Object result;
-		
+		playerList = new HashMap<String, ConnectionToClient>();
 
-		// if player 1 has not been initialized, set player1 as the client that just connected
-		if (player1.equals(null))
-		{
-			player1 = client;
-			log.writeToLog("Player 1: " + clientList.get(player1) + "ready!\n");
+		Thread[] list = this.getClientConnections();
 
-			// send a result that would grey out the fire button and write a waiting for opponent message on log
-			result = "WaitingForOpponent";
-
-			try
-			{
-				player1.sendToClient(result);
-			}
-			catch (IOException e)
-			{
-				return;
-			}
-
-		}
-		// if player 1 has been initialized, set player2 as the client that just connected
-		else
-		{
-			player2 = client;
-			log.writeToLog("Player 2: " + clientList.get(player2) + "ready!\n");
-			log.writeToLog("All players ready!\n");
-
-			// allow the game to start by making the fire button visible and write to log
-			
-			result = "StartGame";
-
-			try
-			{
-				// send result to both players
-				player1.sendToClient(result);
-				player2.sendToClient(result);
-			}
-			catch (IOException e)
-			{
-				return;
-			}
-			
-		}
+		//playerList.put("Player 1", list[0]);
+		//playerList.put("Player 2", list[1]);
 	}
+
 
 	// Method that handles listening exceptions by displaying exception information.
 	public void listeningException(Throwable exception) 
 	{
 		running = false;
-		//status.setText("Exception occurred while listening");
-		//status.setForeground(Color.RED);
+		status.setText("Exception occurred while listening");
+		status.setForeground(Color.RED);
 		log.append("Listening exception: " + exception.getMessage() + "\n");
 		log.append("Press Listen to restart server\n");
+	}
+
+	public boolean isSink(String[] arr)
+	{
+		for (int i = 1; i<arr.length; i++)
+		{
+			if (arr[i-1] != arr[i])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public String checkForHit(String fireCoord, ArrayList<String[]> shipCoords) 
+	{
+		String result = "Miss";
+
+		for (String[] coords : shipCoords)
+		{
+			for (int i = 0; i < coords.length; i++)
+			{
+				if (fireCoord.equals(coords[i]))
+				{
+					coords[i] = "HIT";
+					result = "Hit";
+
+					if (isSink(coords))
+					{
+						result = "Sink";
+					}
+				}
+			}
+
+
+		}
+
+		return result;
 	}
 
 }

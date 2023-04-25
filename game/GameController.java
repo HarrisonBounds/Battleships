@@ -8,16 +8,18 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 
-import clientcommunication.ChatClient;
+import clientcommunication.GameClient;
 
 public class GameController implements ActionListener {
 
 	private JPanel container;
-	private ChatClient client;
-	private GameData data;
+	private GameClient client;
+	private GameData gameData;
+	private PlayerWaterPanelData pwPanelData;
 
-	public GameController(JPanel container, ChatClient client) {
+	public GameController(JPanel container, GameClient client) {
 		this.container = container;
 		this.client = client;
 	}
@@ -37,30 +39,96 @@ public class GameController implements ActionListener {
 			 */
 			if (pwp.setShipFlagTrue(gp.getAlignment())) {
 				//after placing a ship, the shipCounter gets automatically incremented
-			}
-			/*
-			 * when we shipCounter is equal to 4, we have 5 ships on the board
-			 * we can let the server know we're ready
-			 */
-			else if (pwp.getShipCounter() == 5) {
+				//				if (pwp.getShipCounter() == 5) {
+				//					try {
+				//						data = new GameData(pwp.getShipCoordinates());
+				//						client.sendToServer(data);
+				//						//then we change the button to FIRE
+				//						//CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
+				//						//cardLayout.show(gp.getCards(), "postShipsPlaced");
+				//					} catch (IOException e1) {
+				//						// TODO Auto-generated catch block
+				//						e1.printStackTrace();
+				//					}
+				//				}
+				/*
+				 * when we shipCounter is equal to 4, we have 5 ships on the board
+				 * we can let the server know we're ready
+				 */
 
-//				try {
-//					client.sendToServer("Ready");
-					//data = new GameData(pwp.getShipCoordinates());
-					System.out.println(pwp.getShipCoordinates());
+			}
+		}
+
+		if (command.equalsIgnoreCase("Ready"))
+		{
+			if (pwp.getShipCounter() == 5) {
+				try {
+					gameData = new GameData(pwp.getShipCoordinates());
+					client.sendToServer(gameData);
 					//then we change the button to FIRE
-					CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
-					cardLayout.show(gp.getCards(), "postShipsPlaced");
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-				
+					//CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
+					//cardLayout.show(gp.getCards(), "postShipsPlaced");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		if (command.equalsIgnoreCase("FIRE")) {
-			//send the server the location of the fire
-			opponent.setFireFlagTrue();
+			/*
+			 * setFireFlag triggers the firing of a ship
+			 * It assigns the location of the fire so we can then send that location to the server
+			 */
+			//opponent.setFireFlagTrue();
+			String fireLocation = opponent.getFireLocation();
+			System.out.println(fireLocation);
+			pwPanelData = new PlayerWaterPanelData(fireLocation);
+
+			try {
+				client.sendToServer(pwPanelData);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
+	}
+
+	public void startGame()
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		CardLayout cardLayout = (CardLayout)gp.getCards().getLayout();
+		cardLayout.show(gp.getCards(), "postShipsPlaced");
+	}
+	public void setLog(JTextArea log)
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		gp.setLog(log);
+	}
+	public void markHit(String fireLocation)
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		PlayerWaterPanel opponent = gp.getOpponentWater();
+
+		opponent.isHit(fireLocation);
+	}
+	public void markMiss(String fireLocation)
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		PlayerWaterPanel opponent = gp.getOpponentWater();
+
+		opponent.isMiss(fireLocation);
+	}
+	public void markOppMiss(String fireLocation)
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		PlayerWaterPanel player = gp.getPlayerWater();
+		
+		player.isMiss(fireLocation);
+	
+	}
+	public void announceWinner(String username)
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		gp.announceWinner(username);
 	}
 }
