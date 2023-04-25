@@ -156,14 +156,30 @@ public class PlayerWaterPanel  extends JPanel
 //		return hit;	
 //	}
 
-	public void isHit(JButton butt)
+	public void isHit(String fireLocation)
 	{
-		butt.setBackground(new Color(255, 0, 0));
+		for (JButton button : btns) 
+		{
+			if (button.getToolTipText().equals(fireLocation))
+			{
+				button.setBackground(new Color(255, 0, 0));
+			}
+		}
+		
+		//butt.setBackground(new Color(255, 0, 0));
 	}
 
-	public void isMiss(JButton butt)
+	public void isMiss(String fireLocation)
 	{
-		butt.setBackground(new Color(255, 255, 255));
+		for (JButton button : btns) 
+		{
+			if (button.getToolTipText().equals(fireLocation))
+			{
+				button.setBackground(new Color(255, 255, 255));
+			}
+		}
+		
+		//butt.setBackground(new Color(255, 255, 255));
 	}
 
 	public Boolean addShip(JButton source, Ship ship, String alignment)
@@ -315,22 +331,24 @@ public class PlayerWaterPanel  extends JPanel
 			String command = ae.getActionCommand();
 			JButton source = (JButton) ae.getSource();
 
+			
+			setFireLocation(source.getToolTipText());
 			//fire
-			if (fireFlag)
-			{
-				setFireLocation(source.getToolTipText());
-//				if(checkHit(source))
-//				{
-//					isHit(source);
-//					
-//				}
-//				else
-//				{
-//					isMiss(source);
-//				}
-
-				fireFlag = false;
-			}
+//			if (fireFlag)
+//			{
+//				setFireLocation(source.getToolTipText());
+////				if(checkHit(source))
+////				{
+////					isHit(source);
+////					
+////				}
+////				else
+////				{
+////					isMiss(source);
+////				}
+//
+//				fireFlag = false;
+//			}
 
 			//add the ships
 			if (addShipFlag)
