@@ -3,12 +3,12 @@ package game;
 import java.awt.*;
 import javax.swing.*;
 
-import clientcommunication.ChatClient;
+import clientcommunication.GameClient;
 
 public class GamePanel extends JPanel{
 	private ImageIcon icon;
 	private JPanel container;
-	private ChatClient client;
+	private GameClient client;
 	private GameController gameControl;
 	private GameData gameData;
 	private GameLog log;
@@ -173,5 +173,10 @@ public class GamePanel extends JPanel{
 	public void setLog(JTextArea log)
 	{
 		this.log.setLog(log);
+	}
+	
+	public void announceWinner(String username)
+	{
+		JOptionPane.showMessageDialog(null, username + " wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -7,7 +7,7 @@ import ocsf.client.AbstractClient;
 import userinterface.*;
 import userinterface.Error;
 
-public class ChatClient extends AbstractClient
+public class GameClient extends AbstractClient
 {
   // Private data fields for storing the GUI controllers.
   private LoginControl loginControl;
@@ -29,7 +29,7 @@ public class ChatClient extends AbstractClient
   }
 
   // Constructor for initializing the client with default settings.
-  public ChatClient()
+  public GameClient()
   {
     super("localhost", 8300);
   }
@@ -83,15 +83,21 @@ public class ChatClient extends AbstractClient
     	String[] data = (String[])arg0;
     	String fireLocation = (String)data[0];
     	String hitCheck = (String)data[1];
+    	String username = (String)data[2];
     	System.out.println("chatClient fireloc: " + fireLocation + " hitCheck: " + hitCheck + "\n");
     	
-    	if (hitCheck.equals("Hit"))
+    	if (hitCheck.equals("Hit") || hitCheck.equals("Sink"))
     	{
     		gameControl.markHit(fireLocation);
     	}
-    	else if (hitCheck.equals("Miss") || hitCheck.equals("Sink"))
+    	else if (hitCheck.equals("Miss"))
     	{
     		gameControl.markMiss(fireLocation);
+    	}
+    	else if (hitCheck.equals("Winner"))
+    	{
+    		gameControl.markHit(fireLocation);
+    		gameControl.announceWinner(username);
     	}
     }
   }  

@@ -250,6 +250,8 @@ public class GameServer extends AbstractServer{
 			PlayerWaterPanelData data = (PlayerWaterPanelData)arg0;
 			String fireLocation = data.getFireLocation();
 			String hitCheck = "";
+			String username = (String)arg1.getInfo("username");
+			String win;
 			int pNum = (int)arg1.getInfo("player");
 
 			if (pNum == 1)
@@ -266,18 +268,27 @@ public class GameServer extends AbstractServer{
 					}
 				}
 				
-				String[] result = new String[] {fireLocation, hitCheck};
+				String[] result = new String[] {fireLocation, hitCheck, username};
 				
 				log.append(arg1.getInfo("username") + " fire at " + fireLocation + " is a " + hitCheck + "!\n");
 
 				try
 				{
 					arg1.sendToClient(result);
+					
+					if (hitCheck.equals("Winner"))
+					{
+						this.sendToAllClients(result);
+					}
 				}
 				catch (IOException e)
 				{
 					return;
 				}
+				
+				
+				
+				
 			}
 			else
 			{
@@ -293,13 +304,18 @@ public class GameServer extends AbstractServer{
 					}
 				}
 				
-				String[] result = new String[] {fireLocation, hitCheck};
+				String[] result = new String[] {fireLocation, hitCheck, username};
 				
 				log.append(arg1.getInfo("username") + "fire at " + fireLocation + " is a " + hitCheck + "!\n");
 
 				try
 				{
 					arg1.sendToClient(result);
+					
+					if (hitCheck.equals("Winner"))
+					{
+						this.sendToAllClients(result);
+					}
 				}
 				catch (IOException e)
 				{

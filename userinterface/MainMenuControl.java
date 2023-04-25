@@ -9,9 +9,9 @@ import game.*;
 public class MainMenuControl implements ActionListener {
 	// Private data field for storing the container.
 	  private JPanel container;
-	  private ChatClient client;
+	  private GameClient client;
 	  // Constructor for the main menu controller.
-	  public MainMenuControl(JPanel container, ChatClient client)
+	  public MainMenuControl(JPanel container, GameClient client)
 	  {
 	    this.container = container;
 	    this.client = client;
