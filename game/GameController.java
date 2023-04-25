@@ -118,6 +118,14 @@ public class GameController implements ActionListener {
 
 		opponent.isMiss(fireLocation);
 	}
+	public void markOppMiss(String fireLocation)
+	{
+		GamePanel gp = (GamePanel)container.getComponent(3);
+		PlayerWaterPanel player = gp.getPlayerWater();
+		
+		player.isMiss(fireLocation);
+	
+	}
 	public void announceWinner(String username)
 	{
 		GamePanel gp = (GamePanel)container.getComponent(3);
