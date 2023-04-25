@@ -27,7 +27,7 @@ public class MainMenuControl implements ActionListener {
 	    if (command.equals("Join Game"))
 	    {
 	      //not sure if I need this below?
-	      MainMenuPanel mainMenuPanel = (MainMenuPanel)container.getComponent(3); //game panel component number
+	      //MainMenuPanel mainMenuPanel = (MainMenuPanel)container.getComponent(3); //game panel component number
 	      //set error?
 	      CardLayout cardLayout = (CardLayout)container.getLayout();
 	      cardLayout.show(container, "4"); //container number
