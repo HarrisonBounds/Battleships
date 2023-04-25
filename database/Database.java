@@ -111,7 +111,7 @@ public class Database
 
 		// execute the dml statement
 		try {
-			executeDML("INSERT INTO user VALUES('"+username+"',aes_encrypt('"+password+"','key'))");
+			executeDML("INSERT INTO user VALUES('"+username+"',aes_encrypt('"+password+"','key'),0,0)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -208,6 +208,7 @@ public class Database
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
